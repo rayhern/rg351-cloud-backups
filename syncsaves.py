@@ -38,7 +38,8 @@ TEMP_SAVE_PATH = os.getcwd() + "/saves"
 def main(most_recent_saves):
     global RSYNC_DIABLO_PATH,RSYNC_PSX_PATH,RSYNC_GBA_PATH, MAC_DIABLO_PATH, GOOGLE_DRIVE_SAVE_DIR
     global TEMP_SAVE_PATH
-    if os.path.exists(os.getcwd() + "/saves") is False:
+    if not os.path.exists(os.getcwd() + "/saves"):
+        print('trying to create folder')
         os.mkdir(os.getcwd() + "/saves/")
         os.mkdir(os.getcwd() + "/saves/diablo")
         os.mkdir(os.getcwd() + "/saves/PSP/")
@@ -46,7 +47,23 @@ def main(most_recent_saves):
         os.mkdir(os.getcwd() + "/saves/psx/")
     os.system('clear')
     print("EmulationStation/RetroArch/RetroPie Save File Sync has started.\n")
-    print('syncing diablo save files to: ' + LOCAL_DIABLO_PATH)
+    print("")
+    print("System Cloud Save Manager v1.0.0")
+    print("By Ray Hernandez")
+    print("")
+    print("Where are your most recent save files?")
+    print("------------------------------------------")
+    print("1.) Handheld Game System/RG350/RG351/Raspberry Pi")
+    print("2.) Local game/emulation directories on this computer")
+    print("3.) Sync save games from Google Drive")
+    selection = int(input("Enter your selection: ").strip())
+    if selection == "":
+        print("You must enter a valid selection.")
+        sys.exit(0)
+    if (selection == 1 or selection == 2 or selection == 3):
+        sync_saves(selection)
+    else:
+        print("Does not compute.")
     sync_saves(most_recent_saves)
     
 def sync_saves(answer):
@@ -136,21 +153,4 @@ def sync_saves(answer):
         print("Command not implemented yet.")
 
 if __name__ == "__main__":
-    os.system('clear')
-    print("")
-    print("System Cloud Save Manager v1.0.0")
-    print("By Ray Hernandez")
-    print("")
-    print("Where are your most recent save files?")
-    print("------------------------------------------")
-    print("1.) Handheld Game System/RG350/RG351/Raspberry Pi")
-    print("2.) Local game/emulation directories on this computer")
-    print("3.) Sync save games from Google Drive")
-    selection = int(input("Enter your selection: ").strip())
-    if selection == "":
-        print("You must enter a valid selection.")
-        sys.exit(0)
-    if (selection == 1 or selection == 2 or selection == 3):
-        sync_saves(selection)
-    else:
-        print("Does not compute.")
+    main()
