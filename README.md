@@ -1,4 +1,4 @@
-# ssh enabled device saved game backups to your local computer and Google Drive.
+## Save all game save file backups from your RG351/RG350 to your local computer and Google Drive.
 
 sshpass is required on local machine. please install this first.
 
