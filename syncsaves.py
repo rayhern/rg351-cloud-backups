@@ -63,6 +63,24 @@ def main():
         sync_saves(selection)
     else:
         print("Does not compute.")
+
+def send_rsync(source, destination):
+    global SSH_USER, SSH_PASSWORD, SSH_IP_ADDRESS
+    os.system('sshpass -p "%s" rsync -a %s@%s:%s "%s"' % (
+        SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, source, destination
+    ))
+
+def send_rsync2(source, destination, extension):
+    global SSH_USER, SSH_PASSWORD, SSH_IP_ADDRESS
+    os.system('sshpass -p "%s" rsync -a --include "*.%s" --exclude "*" %s@%s:%s "%s"' % (
+        SSH_PASSWORD, extension, SSH_USER, SSH_IP_ADDRESS, source, destination
+    ))
+
+def send_rsync3(source, destination, extension):
+    global SSH_USER, SSH_PASSWORD, SSH_IP_ADDRESS
+    os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.%s" --exclude "*" %s@%s:%s "%s"' % (
+        SSH_PASSWORD, extension, SSH_USER, SSH_IP_ADDRESS, source, destination
+    ))
     
 def sync_saves(answer):
 
@@ -79,43 +97,51 @@ def sync_saves(answer):
         
         mac_diablo_dir = TEMP_SAVE_PATH + '/diablo'
         print("Copying Diablo save files from remote %s..." % REMOTE_DIABLO_PATH)
-        os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.sv" --exclude "*" %s@%s:%s "%s"' % (
-            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_DIABLO_PATH, mac_diablo_dir
-        ))
+        # os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.sv" --exclude "*" %s@%s:%s "%s"' % (
+        #     SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_DIABLO_PATH, mac_diablo_dir
+        # ))
+        send_rsync2(REMOTE_DIABLO_PATH, mac_diablo_dir, 'sv')
         # Copy updated save files to local diablo directory.
         print("Copying save files to local devilution directory...")
         os.system("cp -R '%s' '%s'" % (mac_diablo_dir + '/', LOCAL_DIABLO_PATH))
 
         # Copying all PSP save files.
         print("Copying PSP save files from device...")
-        os.system('sshpass -p "%s" rsync -a %s@%s:%s "%s"' % (
-            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_PSP_PATH, TEMP_SAVE_PATH + "/PSP/"
-        ))
+        # os.system('sshpass -p "%s" rsync -a %s@%s:%s "%s"' % (
+        #     SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_PSP_PATH, TEMP_SAVE_PATH + "/PSP/"
+        # ))
+        send_rsync(REMOTE_PSP_PATH, TEMP_SAVE_PATH + "/PSP/")
 
         # Copying all GBA save files.
         print("Copying GBA save files from device...")
-        os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
-            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBA_PATH, TEMP_SAVE_PATH + "/gba/"
-        ))
+        # os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
+        #     SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBA_PATH, TEMP_SAVE_PATH + "/gba/"
+        # ))
+        send_rsync2(REMOTE_GBA_PATH, TEMP_SAVE_PATH + "/gba", "srm")
+
 
         # Copying all GBC save files.
         print("Copying GBC save files from device...")
-        os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
-            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBC_PATH, TEMP_SAVE_PATH + "/gbc/"
-        ))
+        # os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
+        #     SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBC_PATH, TEMP_SAVE_PATH + "/gbc/"
+        # ))
+        send_rsync2(REMOTE_GBC_PATH, TEMP_SAVE_PATH + "/gbc/", "srm")
 
         # Copying all GB save files.
         print("Copying GB save files from device...")
-        os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
-            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBC_PATH, TEMP_SAVE_PATH + "/gb/"
-        ))
+        # os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
+        #     SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBC_PATH, TEMP_SAVE_PATH + "/gb/"
+        # ))
+        send_rsync2(REMOTE_GB_PATH, TEMP_SAVE_PATH + "/gb/", "srm")
 
         # Copying all GBA save files.
         print("Copying PSX save files from device...")
         # The -m switch should ignore empty directories.
-        os.system('sshpass -p "%s" rsync -am --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
-            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_PSX_PATH, TEMP_SAVE_PATH + "/psx/"
-        ))
+        # os.system('sshpass -p "%s" rsync -am --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
+        #     SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_PSX_PATH, TEMP_SAVE_PATH + "/psx/"
+        # ))
+        # We use send rsync3 here incase discs are in their own folders.
+        send_rsync3(REMOTE_PSX_PATH, TEMP_SAVE_PATH + "/psx/", "srm")
 
         if LOCAL_GOOGLE_DRIVE_PATH != "":
             print("Copying all save files to Google Drive...")
