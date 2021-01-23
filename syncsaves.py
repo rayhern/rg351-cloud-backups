@@ -83,6 +83,18 @@ def sync_saves(answer):
             SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBA_PATH, TEMP_SAVE_PATH + "/gba/"
         ))
 
+        # Copying all GBC save files.
+        print("Copying GBC save files from device...")
+        os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
+            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBC_PATH, TEMP_SAVE_PATH + "/gbc/"
+        ))
+
+        # Copying all GB save files.
+        print("Copying GB save files from device...")
+        os.system('sshpass -p "%s" rsync -a --include "*/" --include "*.srm" --exclude "*" %s@%s:%s "%s"' % (
+            SSH_PASSWORD, SSH_USER, SSH_IP_ADDRESS, REMOTE_GBC_PATH, TEMP_SAVE_PATH + "/gb/"
+        ))
+
         # Copying all GBA save files.
         print("Copying PSX save files from device...")
         # The -m switch should ignore empty directories.
