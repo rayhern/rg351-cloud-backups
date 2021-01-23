@@ -35,7 +35,7 @@ LOCAL_DIABLO_PATH = "/Users/ray/Library/Application Support/diasurgical/deviluti
 LOCAL_GOOGLE_DRIVE_PATH = "/Users/ray/Google Drive File Stream/My Drive/Saved Games"
 TEMP_SAVE_PATH = os.getcwd() + "/saves"
 
-def main(most_recent_saves):
+def main():
     global RSYNC_DIABLO_PATH,RSYNC_PSX_PATH,RSYNC_GBA_PATH, MAC_DIABLO_PATH, GOOGLE_DRIVE_SAVE_DIR
     global TEMP_SAVE_PATH
     if not os.path.exists(os.getcwd() + "/saves"):
@@ -47,7 +47,6 @@ def main(most_recent_saves):
         os.mkdir(os.getcwd() + "/saves/psx/")
     os.system('clear')
     print("EmulationStation/RetroArch/RetroPie Save File Sync has started.\n")
-    print("")
     print("System Cloud Save Manager v1.0.0")
     print("By Ray Hernandez")
     print("")
@@ -64,7 +63,6 @@ def main(most_recent_saves):
         sync_saves(selection)
     else:
         print("Does not compute.")
-    sync_saves(most_recent_saves)
     
 def sync_saves(answer):
 
