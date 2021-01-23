@@ -25,6 +25,8 @@ SSH_PASSWORD = config['connection']['DEVICE_PASS']
 # Save file paths
 REMOTE_PSP_PATH = config['remote']['PSP_SAVE_PATH']
 REMOTE_GBA_PATH = config['remote']['GBA_SAVE_PATH']
+REMOTE_GBC_PATH = config['remote']['GBC_SAVE_PATH']
+REMOTE_GB_PATH = config['remote']['GB_SAVE_PATH']
 REMOTE_PSX_PATH= config['remote']['PSX_SAVE_PATH']
 REMOTE_DIABLO_PATH = config['remote']['DIABLO_PATH']
 
