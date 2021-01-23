@@ -1,4 +1,4 @@
-# rg351-cloud-backups
+# rg351, rg350, ssh save game cloud-backups
 
 sshpass is required on local machine. please install this first.
 
